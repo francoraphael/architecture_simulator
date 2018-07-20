@@ -1,0 +1,13 @@
+mov r1, 23
+addi r2, r1, 50
+sub r3, r2, r1
+add r3, r3, r2
+blt r3, r2, 6
+add r1, r2, r3
+bgt r2, r3, 8
+sw r2, 2(r1)
+sw r2, 3(r1)
+lw r4, 3(r1)
+beq r2, r4, 12
+sub, r5, r3, r4
+sub, r5, r2, r4
