@@ -11,7 +11,6 @@
 char *ptr;
 long val;
 int tokens[5], i = 0, pc = 0;
-
 %}
 
 %%
@@ -44,7 +43,7 @@ void add(int regist[], int memo[]){
 }
 
 void addi(int regist[], int memo[]){
- 	regist[tokens[1]%10] = regist[tokens[2]%10] + regist[tokens[3]];
+ 	regist[tokens[1]%10] = regist[tokens[2]%10] + tokens[3];
 }
 
 void sub(int regist[], int memo[]){
@@ -52,7 +51,7 @@ void sub(int regist[], int memo[]){
 }
 
 void subi(int regist[], int memo[]){
-	regist[tokens[1]%10] = regist[tokens[2]%10] - regist[tokens[3]];
+	regist[tokens[1]%10] = regist[tokens[2]%10] - tokens[3];
 }
 
 void blt(int regist[], int memo[]){
@@ -85,24 +84,26 @@ void mov(int regist[], int memo[]){
 }
 
 void printRegist(int regist[]){
+	int j;
 	printf("\n==============================\n");
 	printf("\nRegistradores de uso geral\n");
-	for(i=0; i<9; i++){
-		printf("r%d = %d\t", i, regist[i]);
-		if(i == 2 || i == 5 || i== 8)
+	for(j=0; j<9; j++){
+		printf("r%d = %d\t", j, regist[j]);
+		if(j == 2 || j == 5 || j== 8)
 			printf("\n");
 	}
 }
 
 void printMemory(int memo[]){
+	int j;
 	printf("\n=================================");
 	printf("=======================================");
 	printf("=======================================");
 	printf("=====================\n");
 	printf("\nMemoria Principal\n");
-	for(i=0; i<100; i++){
-		printf("M[%d] = %d\t", i, memo[i]);
-		if((i%9) == 0 && i != 0)
+	for(j=0; j<100; j++){
+		printf("M[%d] = %d\t", j, memo[j]);
+		if((j%9) == 0 && j != 0)
 			printf("\n");
 	}
 }
@@ -127,7 +128,6 @@ int main(void){
 	char instr[100][255], ir[1][255]; //instruções
 	int regist[9], memo[100], j = 0;
 	regist[0] = 0;
-
 	FILE *fp;
 	YY_BUFFER_STATE bp;
 	fp = fopen("instrucoes.txt", "r");
