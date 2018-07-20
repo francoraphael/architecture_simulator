@@ -1,8 +1,13 @@
-
 %{
 #include <stdlib.h>	
 #include <string.h>
-
+#include <stdio.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+#define pollingDelay 5000
 char *ptr;
 long val;
 int tokens[5], i = 0, pc = 0;
@@ -29,7 +34,7 @@ int tokens[5], i = 0, pc = 0;
 "r6" {tokens[i] = 16; i++;}
 "r7" {tokens[i] = 17; i++;}
 "r8" {tokens[i] = 18; i++;}
-[^r][0-9]+ { val = strtol(yytext, &ptr, 10); tokens[i] = val; i++;}
+[^r][0-9]+ {val = strtol(yytext, &ptr, 10); tokens[i] = val; i++;}
 . {}
 %%
 
@@ -109,6 +114,14 @@ void printGenReg(char ir[1][255]){
 	printf("IR --> %s\n", ir[0]);
 }
 
+void delay(){
+    #ifdef _WIN32
+        Sleep(pollingDelay);
+    #else
+        sleep(pollingDelay/1000);
+    #endif
+}
+
 int main(void){
 	void (*f[])(int *, int *) = {add, addi, sub, subi, blt, bgt, beq, lw, sw, mov}; 
 	char instr[100][255], ir[1][255]; //instruções
@@ -117,7 +130,7 @@ int main(void){
 
 	FILE *fp;
 	YY_BUFFER_STATE bp;
-	fp = fopen("teste.txt", "r");
+	fp = fopen("instrucoes.txt", "r");
 	while(fgets(instr[j], 255, fp) != NULL)
 		j++;
 	fclose(fp);
@@ -134,7 +147,9 @@ int main(void){
     	printMemory(memo);
     	printRegist(regist);
     	printGenReg(ir);
+    	delay();
 	}
+
     yy_delete_buffer(bp);
 	return 0;
 }
