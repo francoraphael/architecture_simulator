@@ -143,13 +143,13 @@ int main(void){
 		yy_flush_buffer(bp);
 		pc++;
 		f[tokens[0]](regist, memo);
-    	i = 0;
-    	printMemory(memo);
-    	printRegist(regist);
-    	printGenReg(ir);
-    	delay();
+    		i = 0;
+    		printMemory(memo);
+    		printRegist(regist);
+    		printGenReg(ir);
+    		delay();
 	}
 
-    yy_delete_buffer(bp);
+    	yy_delete_buffer(bp);
 	return 0;
 }
